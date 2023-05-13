@@ -1,9 +1,26 @@
 import { useListContext } from "./useListContext";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
+import { useAuthContext } from "./useAuthContext";
 
 export const useListCRUD = () => {
   const { list, dispatch } = useListContext();
+  const { user } = useAuthContext();
+
+  const getTasks = async () => {
+    try {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/todo`, {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${user.token}`,
+        },
+      });
+      const data = await res.json();
+      dispatch({ type: "SET_LIST", payload: data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   /**
    * Toggle event for important task
@@ -83,5 +100,5 @@ export const useListCRUD = () => {
     }
   };
 
-  return { toggleImportant, toggleCompleted, addTask };
+  return { toggleImportant, toggleCompleted, addTask, getTasks };
 };
