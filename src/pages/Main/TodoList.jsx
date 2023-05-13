@@ -11,7 +11,7 @@ import { useListCRUD } from "../../hooks/useListCRUD";
 
 export default function TodayList() {
   const { list } = useListContext();
-  const { toggleImportant, toggleCompleted } = useListCRUD();
+  const { toggleImportant, toggleCompleted, getTasks } = useListCRUD();
   const [todayDate, setTodayDate] = useState("");
   const [addModalVisibility, setAddModalVisibility] = useState(false);
   const params = useParams();
@@ -30,6 +30,8 @@ export default function TodayList() {
     const month = (today.getMonth() + 1).toString().padStart(2, "0");
     const day = today.getDate().toString().padStart(2, "0");
     setTodayDate(`${year}-${month}-${day}`);
+
+    getTasks();
   }, []);
 
   const filteredItems = list.filter((item) => {
@@ -71,11 +73,15 @@ export default function TodayList() {
 
       {/* Main Content (Todos Table) */}
       <table>
-        <th>Task</th>
-        <th>Description</th>
-        <th>Due</th>
-        <th>Time</th>
-        <th style={{ textAlign: "center" }}>Important</th>
+        <thead>
+          <tr>
+            <th>Task</th>
+            <th>Description</th>
+            <th>Due</th>
+            <th>Time</th>
+            <th style={{ textAlign: "center" }}>Important</th>
+          </tr>
+        </thead>
         <tbody>
           {filteredItems.map((item) => (
             <tr key={item._id}>
