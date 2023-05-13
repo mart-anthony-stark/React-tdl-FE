@@ -1,0 +1,32 @@
+.main_page .heading {
+  margin-top: 20px;
+  padding-left: 1rem;
+  font-size: 2rem;
+}
+.main_page table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.main_page table th {
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+  text-align: left;
+}
+.main_page table th,
+.main_page table td {
+  padding: 0.5rem;
+}
+.main_page table td {
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+}
+.main_page table .favorite {
+  font-size: 2rem;
+  text-align: center;
+  cursor: pointer;
+}
+.main_page input[type="checkbox"] {
+  cursor: pointer;
+  width: 25px;
+  height: 25px;
+}

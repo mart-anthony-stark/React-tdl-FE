@@ -1,0 +1,56 @@
+.navbar {
+  background: var(--c-secondary);
+  color: #ffffff;
+  justify-content: space-around;
+  padding: 1rem;
+  position: relative;
+}
+.navbar a {
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.navbar .active {
+  color: var(--c-accent) !important;
+}
+.navbar button.profile {
+  height: 50px;
+  width: 50px;
+  font-size: 50px;
+  border-radius: 50%;
+  border: none;
+  background: none;
+  color: #ffffff;
+  outline: none;
+}
+
+.navbar .menu {
+  position: absolute;
+  background: #eeeded;
+  right: 0;
+  bottom: 0;
+  width: 250px;
+  min-height: 150px;
+  padding: 0.5rem;
+  color: black;
+  transform: translateY(173px);
+}
+.navbar .menu .menu_item {
+  cursor: pointer;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 5px;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+.navbar .menu .menu_item:hover {
+  background: #d4d3d3;
+}
+.navbar .menu .menu_item .icon {
+  font-size: 2rem;
+}
+.navbar .menu .menu_item label {
+  user-select: none;
+  cursor: pointer;
+}

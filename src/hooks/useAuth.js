@@ -1,0 +1,95 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useAuthContext } from "./useAuthContext";
+
+export default function useAuth() {
+  const [isLoading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { user, dispatch } = useAuthContext();
+
+  /**
+   * Login
+   * @param {*} {email, password}
+   */
+  const login = async ({ email, password }) => {
+    try {
+      setLoading(true);
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const json = await res.json();
+      setLoading(false);
+
+      if (!res.ok) {
+        toast.error(json.msg);
+      } else {
+        toast.success("Successfully Logged In");
+
+        //   Save jwt to localstorage
+        localStorage.setItem("user", JSON.stringify(json));
+
+        //   update auth context
+        dispatch({ type: "LOGIN", payload: json });
+
+        // Proceed to main page
+        navigate("/todos/today");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  /**
+   * Signup
+   * @param {*} { name, email, password, dob }
+   */
+  const signup = async ({ name, email, password, dob }) => {
+    try {
+      setLoading(true);
+      const res = await fetch(
+        `${process.env.REACT_APP_API_URL}/auth/register`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, password, dob }),
+        }
+      );
+      const json = await res.json();
+      setLoading(false);
+
+      if (!res.ok) {
+        toast.error(json.msg);
+      } else {
+        toast.success("Successfully Created An Account");
+        //   Save jwt to localstorage
+        localStorage.setItem("user", JSON.stringify(json));
+
+        //   update auth context
+        dispatch({ type: "LOGIN", payload: json });
+
+        // Proceed to main page
+        navigate("/todos/today");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  /**
+   * Logout - clears localStorage and user info in auth context
+   */
+  const logout = async () => {
+    localStorage.clear();
+    dispatch({ type: "LOGOUT" });
+    navigate("/auth/login");
+  };
+  return {
+    isLoading,
+    login,
+    signup,
+    logout,
+  };
+}
