@@ -49,7 +49,6 @@ export const useListCRUD = () => {
       });
 
       const data = await res.json();
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -59,16 +58,32 @@ export const useListCRUD = () => {
    * Toggle event for completed task
    * @param {*} _id
    */
-  const toggleCompleted = (_id) => {
+  const toggleCompleted = async (_id) => {
+    let newState = null;
     const newList = list.map((item) => {
       if (item._id === _id) {
+        newState = !item.completed;
         item.completed = !item.completed;
       }
       return item;
     });
     dispatch({ type: "SET_LIST", payload: newList });
 
-    // DB Work
+    try {
+      // DB Work
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/todo/${_id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({ completed: newState }),
+      });
+
+      const data = await res.json();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   /**
