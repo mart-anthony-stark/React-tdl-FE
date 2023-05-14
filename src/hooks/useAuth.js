@@ -82,6 +82,37 @@ export default function useAuth() {
     }
   };
 
+  const changePassword = async ({ currentPass, newPass }) => {
+    try {
+      setLoading(true);
+      const res = await fetch(
+        `${process.env.REACT_APP_API_URL}/auth/change-password`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${user.token}`,
+          },
+          body: JSON.stringify({
+            currentPassword: currentPass,
+            newPassword: newPass,
+          }),
+        }
+      );
+      const json = await res.json();
+      setLoading(false);
+      console.log(json);
+      if (!res.ok) {
+        toast.error(json.msg);
+      } else {
+        toast.success("Successfully Changed Password");
+        navigate("/todos/today");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   /**
    * Logout - clears localStorage and user info in auth context
    */
@@ -95,5 +126,6 @@ export default function useAuth() {
     login,
     signup,
     logout,
+    changePassword,
   };
 }
