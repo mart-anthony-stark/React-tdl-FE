@@ -58,7 +58,7 @@ export const useListCRUD = () => {
    * Saving new task to database
    * @param {*} e - Event
    */
-  const addTask = ({ taskname, description, due, time }, callback) => {
+  const addTask = async ({ taskname, description, due, time }, callback) => {
     try {
       let isValid = true;
       // validation
@@ -90,8 +90,22 @@ export const useListCRUD = () => {
           completed: false,
         };
         dispatch({ type: "ADD_TASK", payload: newTask });
-
+        newTask._id = undefined;
         // DB WORK
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/todo`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${user.token}`,
+          },
+          body: JSON.stringify(newTask),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          toast.success("Something went wrong to the server.");
+          return;
+        }
+
         callback();
         toast.success("Successfully added new to do.");
       }
