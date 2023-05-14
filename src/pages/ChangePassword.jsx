@@ -1,21 +1,42 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./changepass.css";
+import useAuth from "../hooks/useAuth";
+import { toast } from "react-toastify";
 
 export default function ChangePassword() {
   const navigate = useNavigate();
-  const [currentPass, setCurrentPass] = useState();
-  const [newPass, setNewPass] = useState();
-  const [confirmPass, setConfirmPass] = useState();
+  const { changePassword } = useAuth();
+  const [currentPass, setCurrentPass] = useState("");
+  const [newPass, setNewPass] = useState("");
+  const [confirmPass, setConfirmPass] = useState("");
 
   const handleChangePassword = (e) => {
     e.preventDefault();
-    console.log({ currentPass, newPass, confirmPass });
+    let isValid = true;
+    if (currentPass.length === 0) {
+      isValid = false;
+      toast.error("Please input your current password first.");
+    }
+
+    if (newPass.length < 8) {
+      isValid = false;
+      toast.error("Password must be at least 8 characters long.");
+    }
+    if (newPass !== confirmPass) {
+      isValid = false;
+      toast.error("New Passwords does not match");
+    }
+
+    if (isValid) {
+      changePassword({ currentPass, newPass });
+    }
   };
+
   return (
     <div className="change_password center col">
       <h1>Change Password</h1>
-      <form onSubmit={handleChangePassword}>
+      <div>
         <table>
           <tbody>
             <tr>
@@ -53,9 +74,11 @@ export default function ChangePassword() {
           >
             Cancel
           </button>
-          <button className="btn-positive">Save</button>
+          <button onClick={handleChangePassword} className="btn-positive">
+            Save
+          </button>
         </div>
-      </form>
+      </div>
     </div>
   );
 }
