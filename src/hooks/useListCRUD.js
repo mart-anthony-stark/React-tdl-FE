@@ -2,13 +2,16 @@ import { useListContext } from "./useListContext";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import { useAuthContext } from "./useAuthContext";
+import { useState } from "react";
 
 export const useListCRUD = () => {
+  const [isFetching, setIsFetching] = useState(false);
   const { list, dispatch } = useListContext();
   const { user } = useAuthContext();
 
   const getTasks = async () => {
     try {
+      setIsFetching(true);
       const res = await fetch(`${process.env.REACT_APP_API_URL}/todo`, {
         headers: {
           "Content-Type": "application/json",
@@ -16,6 +19,7 @@ export const useListCRUD = () => {
         },
       });
       const data = await res.json();
+      setIsFetching(false);
       dispatch({ type: "SET_LIST", payload: data });
     } catch (error) {
       console.log(error);
@@ -146,5 +150,5 @@ export const useListCRUD = () => {
     }
   };
 
-  return { toggleImportant, toggleCompleted, addTask, getTasks };
+  return { toggleImportant, toggleCompleted, addTask, getTasks, isFetching };
 };
