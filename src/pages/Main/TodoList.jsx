@@ -9,6 +9,8 @@ import { timeConvert } from "../../helpers";
 import { useListContext } from "../../hooks/useListContext";
 import { useListCRUD } from "../../hooks/useListCRUD";
 import TodoLoader from "../../components/TodoLoader/TodoLoader";
+import { MdModeEditOutline } from "react-icons/md";
+import { AiFillDelete } from "react-icons/ai";
 
 export default function TodayList() {
   const { list } = useListContext();
@@ -23,6 +25,10 @@ export default function TodayList() {
     planned: "Plans",
     priority: "Priority List",
     history: "History List",
+  };
+
+  const handleDelete = (_id) => {
+    
   };
 
   useEffect(() => {
@@ -82,6 +88,7 @@ export default function TodayList() {
             <th>Due</th>
             <th>Time</th>
             <th style={{ textAlign: "center" }}>Important</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -111,6 +118,17 @@ export default function TodayList() {
                 className="favorite"
               >
                 {item.important ? <AiFillStar /> : <AiOutlineStar />}
+              </td>
+              <td className="action-btns">
+                <button className="btn-danger">
+                  <MdModeEditOutline />
+                </button>
+                <button
+                  onClick={() => handleDelete(item._id)}
+                  className="btn-success"
+                >
+                  <AiFillDelete />
+                </button>
               </td>
             </tr>
           ))}
