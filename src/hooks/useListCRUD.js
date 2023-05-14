@@ -26,16 +26,33 @@ export const useListCRUD = () => {
    * Toggle event for important task
    * @param {*} _id
    */
-  const toggleImportant = (_id) => {
+  const toggleImportant = async (_id) => {
+    let newState = null;
     const newList = list.map((item) => {
       if (item._id === _id) {
+        newState = !item.important;
         item.important = !item.important;
       }
       return item;
     });
     dispatch({ type: "SET_LIST", payload: newList });
 
-    // DB Work
+    try {
+      // DB Work
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/todo/${_id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({ important: newState }),
+      });
+
+      const data = await res.json();
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   /**
