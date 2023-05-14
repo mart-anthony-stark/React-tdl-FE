@@ -78,3 +78,9 @@ form .btn-positive:hover {
   background: var(--c-secondary);
   color: #ffffff;
 }
+.btn-success {
+  background: rgb(2, 70, 2);
+}
+.btn-danger {
+  background: rgb(168, 19, 19);
+}
