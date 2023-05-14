@@ -6,11 +6,13 @@ import { TbCircleKey } from "react-icons/tb";
 import { IoLogOutSharp } from "react-icons/io5";
 import { useState } from "react";
 import useAuth from "../../hooks/useAuth";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 export default function Navbar(props) {
   const [profileMenuVisibility, setProfileMenuVisibility] = useState(false);
   const navigate = useNavigate();
   const { logout } = useAuth();
+  const { user } = useAuthContext();
 
   return (
     <div className="navbar center">
@@ -50,7 +52,7 @@ export default function Navbar(props) {
             <div className="icon center">
               <FaUserCircle />
             </div>
-            <label>John Doe</label>
+            <label>{user.user?.name}</label>
           </div>
           <div
             onClick={() => navigate("/change-password")}
