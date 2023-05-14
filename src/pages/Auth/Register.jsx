@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { useState } from "react";
+import FetchLoading from "../../components/FetchLoading/FetchLoading";
 
 export default function Register() {
   const { signup, isLoading } = useAuth();
@@ -16,6 +17,7 @@ export default function Register() {
 
   return (
     <div className="register_page center col">
+      {isLoading ? <FetchLoading text="Creating an Account" /> : null}
       <h1>Create Account</h1>
       <span>
         Already Registered? <Link to="/auth/login">Login</Link>
