@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import "./changepass.css";
 import useAuth from "../hooks/useAuth";
 import { toast } from "react-toastify";
+import FetchLoading from "../components/FetchLoading/FetchLoading";
 
 export default function ChangePassword() {
   const navigate = useNavigate();
-  const { changePassword } = useAuth();
+  const { changePassword, isLoading } = useAuth();
   const [currentPass, setCurrentPass] = useState("");
   const [newPass, setNewPass] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
@@ -35,6 +36,7 @@ export default function ChangePassword() {
 
   return (
     <div className="change_password center col">
+      {isLoading ? <FetchLoading /> : null}
       <h1>Change Password</h1>
       <div>
         <table>
