@@ -8,10 +8,12 @@ import AddModal from "../../components/Modal/AddModal";
 import { timeConvert } from "../../helpers";
 import { useListContext } from "../../hooks/useListContext";
 import { useListCRUD } from "../../hooks/useListCRUD";
+import TodoLoader from "../../components/TodoLoader/TodoLoader";
 
 export default function TodayList() {
   const { list } = useListContext();
-  const { toggleImportant, toggleCompleted, getTasks } = useListCRUD();
+  const { toggleImportant, toggleCompleted, getTasks, isFetching } =
+    useListCRUD();
   const [todayDate, setTodayDate] = useState("");
   const [addModalVisibility, setAddModalVisibility] = useState(false);
   const params = useParams();
@@ -114,6 +116,9 @@ export default function TodayList() {
           ))}
         </tbody>
       </table>
+
+      {/* LOADER */}
+      {isFetching ? <TodoLoader /> : null}
     </div>
   );
 }
