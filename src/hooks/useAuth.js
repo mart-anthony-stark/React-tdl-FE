@@ -101,7 +101,6 @@ export default function useAuth() {
       );
       const json = await res.json();
       setLoading(false);
-      console.log(json);
       if (!res.ok) {
         toast.error(json.msg);
       } else {
