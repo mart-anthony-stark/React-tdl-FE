@@ -1,7 +1,16 @@
 import { Link } from "react-router-dom";
 import "./auth.css";
+import useResetPass from "../../hooks/useResetPass";
+import { useState } from "react";
 
 export default function ForgotPassword() {
+  const { isLoading, sendResetCode } = useResetPass();
+  const [email, setEmail] = useState();
+
+  const handleSendMail = (e) => {
+    e.preventDefault();
+    sendResetCode(email);
+  };
   return (
     <div className="forgot_password center col">
       <h1>Forgot Password</h1>
@@ -11,10 +20,14 @@ export default function ForgotPassword() {
         <br /> your password.
       </div>
 
-      <form>
+      <form onSubmit={handleSendMail}>
         <div className="grp center col">
           <label>EMAIL</label>
-          <input type="text" />
+          <input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+          />
           <button>SEND</button>
         </div>
       </form>
