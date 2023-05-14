@@ -38,6 +38,8 @@ export default function useAuth() {
         navigate("/todos/today");
       }
     } catch (error) {
+      setLoading(false);
+      toast.error("Something went wrong to the server. Please try again later");
       console.log(error);
     }
   };
@@ -74,6 +76,8 @@ export default function useAuth() {
         navigate("/todos/today");
       }
     } catch (error) {
+      setLoading(false);
+      toast.error("Something went wrong to the server. Please try again later");
       console.log(error);
     }
   };
