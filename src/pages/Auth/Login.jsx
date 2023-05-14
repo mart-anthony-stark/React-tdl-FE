@@ -3,6 +3,7 @@ import bg_image from "../../assets/bg_image.png";
 import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { useState } from "react";
+import FetchLoading from "../../components/FetchLoading/FetchLoading";
 
 export default function App() {
   const { isLoading, login } = useAuth();
@@ -16,6 +17,7 @@ export default function App() {
 
   return (
     <div className="login_page">
+      {isLoading ? <FetchLoading text="Logging In" /> : null}
       <div className="left center">
         <img src={bg_image} alt="todolist" />
       </div>
