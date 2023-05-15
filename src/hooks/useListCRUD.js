@@ -90,6 +90,20 @@ export const useListCRUD = () => {
     }
   };
 
+  const deleteTask = async (_id) => {
+    try {
+      const newList = list.filter((item) => item._id !== _id);
+      dispatch({ type: "SET_LIST", payload: newList });
+
+      // DB WORK
+
+      // Success
+      toast.success("Deleted a to do");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   /**
    * Saving new task to database
    * @param {*} e - Event
@@ -125,7 +139,6 @@ export const useListCRUD = () => {
           important: false,
           completed: false,
         };
-        dispatch({ type: "ADD_TASK", payload: newTask });
         newTask._id = undefined;
         // DB WORK
         const res = await fetch(`${process.env.REACT_APP_API_URL}/todo`, {
@@ -142,6 +155,8 @@ export const useListCRUD = () => {
           return;
         }
 
+        dispatch({ type: "ADD_TASK", payload: data });
+
         callback();
         toast.success("Successfully added new to do.");
       }
@@ -150,5 +165,12 @@ export const useListCRUD = () => {
     }
   };
 
-  return { toggleImportant, toggleCompleted, addTask, getTasks, isFetching };
+  return {
+    toggleImportant,
+    toggleCompleted,
+    addTask,
+    getTasks,
+    isFetching,
+    deleteTask,
+  };
 };
