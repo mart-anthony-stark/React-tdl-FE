@@ -1,12 +1,20 @@
+import { useEffect } from "react";
 import Navbar from "../../components/Navbar/Navbar";
+import TodoLoader from "../../components/TodoLoader/TodoLoader";
 import { timeConvert } from "../../helpers";
+import { useListCRUD } from "../../hooks/useListCRUD";
 import { useListContext } from "../../hooks/useListContext";
 import { AiFillDelete } from "react-icons/ai";
 
 export default function History() {
-  const { list } = useListContext();
+  const { history } = useListContext();
+  const { isFetching, getHistory } = useListCRUD();
 
-  const filteredItems = list.filter((item) => {
+  useEffect(() => {
+    getHistory();
+  }, []);
+
+  const filteredItems = history.filter((item) => {
     return item.completed;
   });
 
@@ -14,6 +22,10 @@ export default function History() {
   return (
     <div className="main_page">
       <Navbar active="history" />
+
+      <h4 className="heading center" style={{ justifyContent: "flex-start" }}>
+        History
+      </h4>
       <table>
         <thead>
           <tr>
@@ -45,6 +57,9 @@ export default function History() {
           ))}
         </tbody>
       </table>
+
+      {/* LOADER */}
+      {isFetching ? <TodoLoader /> : null}
     </div>
   );
 }
