@@ -10,6 +10,7 @@ import ChangePassword from "./pages/ChangePassword";
 import { useEffect, useState } from "react";
 import { useAuthContext } from "./hooks/useAuthContext";
 import LoadingScreen from "./components/Loading/LoadingScreen";
+import History from "./pages/Main/History";
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -61,6 +62,10 @@ export default function App() {
         <Route
           path="/todos/:category"
           element={loggedUser ? <TodoList /> : <Navigate to="/auth/login" />}
+        />
+        <Route
+          path="/history"
+          element={loggedUser ? <History /> : <Navigate to="/auth/login" />}
         />
         <Route path="/change-password" element={<ChangePassword />} />
       </Routes>
