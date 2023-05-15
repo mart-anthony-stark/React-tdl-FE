@@ -8,6 +8,12 @@
   --c-secondary: #004aad;
   --c-accent: #fefb06;
 }
+.swal2-title {
+  font-family: "Poppins", sans-serif;
+}
+.swal2-html-container {
+  font-family: "Poppins", sans-serif;
+}
 * {
   margin: 0;
   padding: 0;
