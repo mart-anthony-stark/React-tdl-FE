@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { IoIosAddCircle } from "react-icons/io";
 import AddModal from "../../components/Modal/AddModal";
+import EditModal from "../../components/Modal/EditModal";
 import { timeConvert } from "../../helpers";
 import { useListContext } from "../../hooks/useListContext";
 import { useListCRUD } from "../../hooks/useListCRUD";
@@ -18,6 +19,7 @@ export default function TodayList() {
   const { toggleImportant, toggleCompleted, getTasks, deleteTask, isFetching } =
     useListCRUD();
   const [todayDate, setTodayDate] = useState("");
+  const [selectedTask, setSelectedTask] = useState(null);
   const [addModalVisibility, setAddModalVisibility] = useState(false);
   const params = useParams();
 
@@ -81,6 +83,10 @@ export default function TodayList() {
         <AddModal onClose={() => setAddModalVisibility(false)} />
       ) : null}
 
+      {selectedTask ? (
+        <EditModal item={selectedTask} onClose={() => setSelectedTask(null)} />
+      ) : null}
+
       {/* Heading */}
       <h4 className="heading center" style={{ justifyContent: "flex-start" }}>
         {categoryMap[params.category]}
@@ -135,7 +141,10 @@ export default function TodayList() {
               </td>
               {params.category === "planned" ? (
                 <td className="action-btns">
-                  <button className="btn-success">
+                  <button
+                    onClick={() => setSelectedTask(item)}
+                    className="btn-success"
+                  >
                     <MdModeEditOutline />
                   </button>
                   <button
