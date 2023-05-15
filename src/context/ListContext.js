@@ -6,12 +6,20 @@ export const listReducer = (state, action) => {
   switch (action.type) {
     case "SET_LIST":
       return {
+        ...state,
         list: action.payload,
       };
     case "ADD_TASK":
       return {
+        ...state,
         list: [action.payload, ...state.list],
       };
+
+    case "ADD_HISTORY_ITEM":
+      return {
+        ...state,
+        history: [action.payload, ...state.list]
+      }
     default:
       return state;
   }
@@ -20,6 +28,7 @@ export const listReducer = (state, action) => {
 export const ListContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(listReducer, {
     list: [],
+    history: [],
   });
 
   return (
