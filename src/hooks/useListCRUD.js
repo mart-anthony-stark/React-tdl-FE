@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 
 export const useListCRUD = () => {
   const [isFetching, setIsFetching] = useState(false);
-  const { list, dispatch } = useListContext();
+  const { list, history, dispatch } = useListContext();
   const { user } = useAuthContext();
 
   const getTasks = async () => {
@@ -159,6 +159,34 @@ export const useListCRUD = () => {
       console.log(error);
     }
   };
+  const deleteHistoryItem = async (_id) => {
+    try {
+      const newHistory = history.filter((item) => item._id !== _id);
+      dispatch({ type: "SET_HISTORY", payload: newHistory });
+
+      // DB WORK
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/todo/${_id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${user.token}`,
+        },
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error(
+          "Something went wrong to the server. Please try again later."
+        );
+        return;
+      }
+
+      // Success
+      toast.success("Successfully deleted a to do");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   /**
    * Saving new task to database
@@ -229,5 +257,6 @@ export const useListCRUD = () => {
     getHistory,
     isFetching,
     deleteTask,
+    deleteHistoryItem,
   };
 };
