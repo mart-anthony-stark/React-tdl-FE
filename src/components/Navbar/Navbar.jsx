@@ -36,7 +36,7 @@ export default function Navbar(props) {
       </Link>
       <Link
         className={`${props.active === "history" ? "active" : ""}`}
-        to="/todos/history"
+        to="/history"
       >
         HISTORY
       </Link>
