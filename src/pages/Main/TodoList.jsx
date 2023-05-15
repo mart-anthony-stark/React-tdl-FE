@@ -60,12 +60,13 @@ export default function TodayList() {
     if (params.category === "today")
       return (
         new Date(item.due).toLocaleDateString() ===
-        new Date(todayDate).toLocaleDateString()
+          new Date(todayDate).toLocaleDateString() && !item.completed
       );
     // All plans
-    else if (params.category === "planned") return true;
+    else if (params.category === "planned") return !item.completed;
     // Priority tasks (Important)
-    else if (params.category === "priority") return item.important;
+    else if (params.category === "priority")
+      return item.important && !item.completed;
 
     return false;
   });
@@ -134,17 +135,19 @@ export default function TodayList() {
               </td>
               {params.category === "planned" ? (
                 <td className="action-btns">
-                  <button className="btn-danger">
+                  <button className="btn-success">
                     <MdModeEditOutline />
                   </button>
                   <button
                     onClick={() => handleDelete(item._id)}
-                    className="btn-success"
+                    className="btn-danger"
                   >
                     <AiFillDelete />
                   </button>
                 </td>
-              ) : null}
+              ) : (
+                <td></td>
+              )}
             </tr>
           ))}
         </tbody>
