@@ -5,10 +5,11 @@ import { timeConvert } from "../../helpers";
 import { useListCRUD } from "../../hooks/useListCRUD";
 import { useListContext } from "../../hooks/useListContext";
 import { AiFillDelete } from "react-icons/ai";
+import Swal from "sweetalert2";
 
 export default function History() {
   const { history } = useListContext();
-  const { isFetching, getHistory } = useListCRUD();
+  const { isFetching, getHistory, deleteHistoryItem } = useListCRUD();
 
   useEffect(() => {
     getHistory();
@@ -18,7 +19,20 @@ export default function History() {
     return item.completed;
   });
 
-  const handleDelete = (_id) => {};
+  const handleDelete = (_id) => {
+    Swal.fire({
+      title: "Do you really want to delete this task?",
+      showDenyButton: true,
+      confirmButtonText: "Yes",
+      denyButtonText: "No",
+      confirmButtonColor: "green",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteHistoryItem(_id);
+      } else if (result.isDenied) {
+      }
+    });
+  };
   return (
     <div className="main_page">
       <Navbar active="history" />
