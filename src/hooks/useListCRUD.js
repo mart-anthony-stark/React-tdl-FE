@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import { useAuthContext } from "./useAuthContext";
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 export const useListCRUD = () => {
   const [isFetching, setIsFetching] = useState(false);
@@ -63,31 +64,47 @@ export const useListCRUD = () => {
    * @param {*} _id
    */
   const toggleCompleted = async (_id) => {
-    let newState = null;
-    const newList = list.map((item) => {
-      if (item._id === _id) {
-        newState = !item.completed;
-        item.completed = !item.completed;
+    Swal.fire({
+      title: "Are you sure you want to mark this task as complete?",
+      text: "This task will be moved to your 'History' list and cannot be undone",
+      showDenyButton: true,
+      confirmButtonText: "Yes",
+      denyButtonText: "No",
+      confirmButtonColor: "green",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        let newState = null;
+        const newList = list.map((item) => {
+          if (item._id === _id) {
+            newState = !item.completed;
+            item.completed = !item.completed;
+          }
+          return item;
+        });
+        dispatch({ type: "SET_LIST", payload: newList });
+
+        try {
+          // DB Work
+          const res = await fetch(
+            `${process.env.REACT_APP_API_URL}/todo/${_id}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+                authorization: `Bearer ${user.token}`,
+              },
+              body: JSON.stringify({ completed: newState }),
+            }
+          );
+
+          const data = await res.json();
+        } catch (error) {
+          console.log(error);
+        }
+      } else if (result.isDenied) {
+        // Swal.fire("Changes are not saved", "", "info");
       }
-      return item;
     });
-    dispatch({ type: "SET_LIST", payload: newList });
-
-    try {
-      // DB Work
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/todo/${_id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${user.token}`,
-        },
-        body: JSON.stringify({ completed: newState }),
-      });
-
-      const data = await res.json();
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   const deleteTask = async (_id) => {
