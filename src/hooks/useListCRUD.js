@@ -26,6 +26,25 @@ export const useListCRUD = () => {
       console.log(error);
     }
   };
+  const getHistory = async () => {
+    try {
+      setIsFetching(true);
+      const res = await fetch(
+        `${process.env.REACT_APP_API_URL}/todo/completed`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+      const data = await res.json();
+      setIsFetching(false);
+      dispatch({ type: "SET_HISTORY", payload: data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   /**
    * Toggle event for important task
@@ -107,6 +126,11 @@ export const useListCRUD = () => {
     });
   };
 
+  /**
+   * Delete
+   * @param {*} _id
+   * @returns void
+   */
   const deleteTask = async (_id) => {
     try {
       const newList = list.filter((item) => item._id !== _id);
@@ -202,6 +226,7 @@ export const useListCRUD = () => {
     toggleCompleted,
     addTask,
     getTasks,
+    getHistory,
     isFetching,
     deleteTask,
   };
