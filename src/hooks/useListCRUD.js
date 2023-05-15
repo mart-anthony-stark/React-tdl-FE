@@ -182,7 +182,7 @@ export const useListCRUD = () => {
       }
 
       // Success
-      toast.success("Successfully deleted a to do");
+      toast.success("Successfully deleted a task");
     } catch (error) {
       console.log(error);
     }
