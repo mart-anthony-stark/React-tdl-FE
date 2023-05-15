@@ -11,6 +11,7 @@ import { useListCRUD } from "../../hooks/useListCRUD";
 import TodoLoader from "../../components/TodoLoader/TodoLoader";
 import { MdModeEditOutline } from "react-icons/md";
 import { AiFillDelete } from "react-icons/ai";
+import Swal from "sweetalert2";
 
 export default function TodayList() {
   const { list } = useListContext();
@@ -28,7 +29,18 @@ export default function TodayList() {
   };
 
   const handleDelete = (_id) => {
-    
+    Swal.fire({
+      title: "Do you really want to delete this task?",
+      showDenyButton: true,
+      confirmButtonText: "Yes",
+      denyButtonText: "No",
+      confirmButtonColor: "green",
+    }).then((result) => {
+      if (result.isConfirmed) {
+      } else if (result.isDenied) {
+        // Swal.fire("Changes are not saved", "", "info");
+      }
+    });
   };
 
   useEffect(() => {
