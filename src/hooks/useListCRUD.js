@@ -96,9 +96,24 @@ export const useListCRUD = () => {
       dispatch({ type: "SET_LIST", payload: newList });
 
       // DB WORK
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/todo/${_id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${user.token}`,
+        },
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error(
+          "Something went wrong to the server. Please try again later."
+        );
+        return;
+      }
 
       // Success
-      toast.success("Deleted a to do");
+      toast.success("Successfully deleted a to do");
     } catch (error) {
       console.log(error);
     }
