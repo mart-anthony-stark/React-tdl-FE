@@ -15,11 +15,11 @@ export const listReducer = (state, action) => {
         list: [action.payload, ...state.list],
       };
 
-    case "ADD_HISTORY_ITEM":
+    case "SET_HISTORY":
       return {
         ...state,
-        history: [action.payload, ...state.list]
-      }
+        history: action.payload,
+      };
     default:
       return state;
   }
