@@ -249,10 +249,71 @@ export const useListCRUD = () => {
     }
   };
 
+  const editTask = async (
+    { _id, taskname, description, due, time },
+    callback
+  ) => {
+    try {
+      let isValid = true;
+      // validation
+      if (taskname === null || taskname.length === 0) {
+        toast.error("Task name is not set");
+        isValid = false;
+      }
+      if (description === null || description.length === 0) {
+        toast.error("Description is not set");
+        isValid = false;
+      }
+      if (due === null || due === "") {
+        toast.error("Due date is not set");
+        isValid = false;
+      }
+      if (time === null || time === "") {
+        toast.error("Due time is not set");
+        isValid = false;
+      }
+
+      if (isValid) {
+        const newList = list.map((item) => {
+          if (item._id === _id) {
+            item.taskname = taskname;
+            item.description = description;
+            item.due = due;
+            item.time = time;
+          }
+          return item;
+        });
+        dispatch({ type: "SET_LIST", payload: newList });
+
+        // DB WORK
+        const res = await fetch(
+          `${process.env.REACT_APP_API_URL}/todo/${_id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              authorization: `Bearer ${user.token}`,
+            },
+            body: JSON.stringify({ taskname, description, due, time }),
+          }
+        );
+
+        const data = await res.json();
+        if (res.ok) {
+          toast.success("Successfully saved task");
+        }
+        callback();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return {
     toggleImportant,
     toggleCompleted,
     addTask,
+    editTask,
     getTasks,
     getHistory,
     isFetching,
