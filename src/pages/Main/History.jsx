@@ -32,7 +32,7 @@ export default function History() {
               <td>{item.description}</td>
               <td>{new Date(item.due).toLocaleDateString()}</td>
               <td>{timeConvert(item.time)}</td>
-              <td>completed</td>
+              <td>Completed</td>
               <td className="action-btns">
                 <button
                   onClick={() => handleDelete(item._id)}
