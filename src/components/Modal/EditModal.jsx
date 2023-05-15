@@ -2,16 +2,16 @@ import { useState } from "react";
 import { useListCRUD } from "../../hooks/useListCRUD";
 import "./modal.css";
 
-export default function AddModal({ item, onClose }) {
+export default function EditModal({ item, onClose }) {
   const [taskname, setTaskname] = useState(item.taskname);
   const [description, setDescription] = useState(item.description);
-  const [due, setDue] = useState(item.due);
+  const [due, setDue] = useState(item.due?.slice(0, 10));
   const [time, setTime] = useState(item.time);
-  const { addTask } = useListCRUD();
+  const { editTask, } = useListCRUD();
 
   return (
     <div className="add_modal">
-      <h2>Add a task</h2>
+      <h2>Edit task</h2>
 
       <table>
         <tbody>
@@ -67,7 +67,12 @@ export default function AddModal({ item, onClose }) {
           Cancel
         </button>
         <button
-          onClick={() => addTask({ taskname, description, due, time }, onClose)}
+          onClick={() =>
+            editTask(
+              { _id: item._id, taskname, description, due, time },
+              onClose
+            )
+          }
           className="btn-positive"
         >
           Save
