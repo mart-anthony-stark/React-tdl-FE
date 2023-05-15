@@ -15,7 +15,7 @@ import Swal from "sweetalert2";
 
 export default function TodayList() {
   const { list } = useListContext();
-  const { toggleImportant, toggleCompleted, getTasks, isFetching } =
+  const { toggleImportant, toggleCompleted, getTasks, deleteTask, isFetching } =
     useListCRUD();
   const [todayDate, setTodayDate] = useState("");
   const [addModalVisibility, setAddModalVisibility] = useState(false);
@@ -37,6 +37,7 @@ export default function TodayList() {
       confirmButtonColor: "green",
     }).then((result) => {
       if (result.isConfirmed) {
+        deleteTask(_id);
       } else if (result.isDenied) {
         // Swal.fire("Changes are not saved", "", "info");
       }
@@ -47,8 +48,8 @@ export default function TodayList() {
     // SETTING THE CURRENT DATE
     const today = new Date();
     const year = today.getFullYear();
-    const month = (today.getMonth() + 1).toString().padStart(2, "0");
-    const day = today.getDate().toString().padStart(2, "0");
+    const month = (today.getMonth() + 1)?.toString().padStart(2, "0");
+    const day = today.getDate()?.toString().padStart(2, "0");
     setTodayDate(`${year}-${month}-${day}`);
 
     getTasks();
@@ -131,17 +132,19 @@ export default function TodayList() {
               >
                 {item.important ? <AiFillStar /> : <AiOutlineStar />}
               </td>
-              <td className="action-btns">
-                <button className="btn-danger">
-                  <MdModeEditOutline />
-                </button>
-                <button
-                  onClick={() => handleDelete(item._id)}
-                  className="btn-success"
-                >
-                  <AiFillDelete />
-                </button>
-              </td>
+              {params.category === "planned" ? (
+                <td className="action-btns">
+                  <button className="btn-danger">
+                    <MdModeEditOutline />
+                  </button>
+                  <button
+                    onClick={() => handleDelete(item._id)}
+                    className="btn-success"
+                  >
+                    <AiFillDelete />
+                  </button>
+                </td>
+              ) : null}
             </tr>
           ))}
         </tbody>
