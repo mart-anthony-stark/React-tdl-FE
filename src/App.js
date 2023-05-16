@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { useAuthContext } from "./hooks/useAuthContext";
 import LoadingScreen from "./components/Loading/LoadingScreen";
 import History from "./pages/Main/History";
+import ResetCode from "./pages/Auth/ResetCode";
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -69,6 +70,10 @@ export default function App() {
           element={
             loggedUser ? <Navigate to="/todos/today" /> : <ForgotPassword />
           }
+        />
+        <Route
+          path="/auth/forgot-password/code/:email"
+          element={loggedUser ? <Navigate to="/todos/today" /> : <ResetCode />}
         />
         <Route
           path="/todos/:category"
