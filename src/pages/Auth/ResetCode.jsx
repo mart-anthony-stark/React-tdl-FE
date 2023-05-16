@@ -31,11 +31,11 @@ export default function ResetCode() {
   const handleClick = () => {
     if (isResendActive) {
       // Perform action when the button is clicked
-      sendResetCode(email);
-
-      setIsClicked(true);
-      setIsResendActive(false);
-      setTimer(30);
+      sendResetCode(email, () => {
+        setIsClicked(true);
+        setIsResendActive(false);
+        setTimer(30);
+      });
     }
   };
 
