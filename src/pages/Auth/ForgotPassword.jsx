@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./auth.css";
 import useResetPass from "../../hooks/useResetPass";
 import { useState } from "react";
@@ -7,10 +7,11 @@ import FetchLoading from "../../components/FetchLoading/FetchLoading";
 export default function ForgotPassword() {
   const { isLoading, sendResetCode } = useResetPass();
   const [email, setEmail] = useState();
+  const navigate = useNavigate();
 
   const handleSendMail = (e) => {
     e.preventDefault();
-    sendResetCode(email);
+    sendResetCode(email, () => navigate(`/auth/forgot-password/code/${email}`));
   };
   return (
     <div className="forgot_password center col">
