@@ -21,7 +21,7 @@ export default function useResetPass() {
         if (!res.ok) {
           toast.error(json.msg);
         } else {
-          toast.success("Email was successfully send to your account!");
+          toast.success("Email was successfully sent to your account!");
         }
       } catch (error) {
         setLoading(false);
