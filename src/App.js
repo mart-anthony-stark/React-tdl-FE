@@ -12,6 +12,7 @@ import { useAuthContext } from "./hooks/useAuthContext";
 import LoadingScreen from "./components/Loading/LoadingScreen";
 import History from "./pages/Main/History";
 import ResetCode from "./pages/Auth/ResetCode";
+import ResetPassword from "./pages/ResetPassword";
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -87,6 +88,12 @@ export default function App() {
           path="/change-password"
           element={
             loggedUser ? <ChangePassword /> : <Navigate to="/auth/login" />
+          }
+        />
+        <Route
+          path="/reset-password"
+          element={
+            loggedUser ? <ResetPassword /> : <Navigate to="/auth/login" />
           }
         />
       </Routes>
