@@ -56,9 +56,20 @@ export default function App() {
       <ToastContainer />
       <Routes>
         <Route path="/" element={<Navigate to="/auth/login" />} />
-        <Route path="/auth/login" element={<Login />} />
-        <Route path="/auth/register" element={<Register />} />
-        <Route path="/auth/forgot-password" element={<ForgotPassword />} />
+        <Route
+          path="/auth/login"
+          element={loggedUser ? <Navigate to="/todos/today" /> : <Login />}
+        />
+        <Route
+          path="/auth/register"
+          element={loggedUser ? <Navigate to="/todos/today" /> : <Register />}
+        />
+        <Route
+          path="/auth/forgot-password"
+          element={
+            loggedUser ? <Navigate to="/todos/today" /> : <ForgotPassword />
+          }
+        />
         <Route
           path="/todos/:category"
           element={loggedUser ? <TodoList /> : <Navigate to="/auth/login" />}
@@ -67,7 +78,12 @@ export default function App() {
           path="/history"
           element={loggedUser ? <History /> : <Navigate to="/auth/login" />}
         />
-        <Route path="/change-password" element={<ChangePassword />} />
+        <Route
+          path="/change-password"
+          element={
+            loggedUser ? <ChangePassword /> : <Navigate to="/auth/login" />
+          }
+        />
       </Routes>
     </div>
   );
