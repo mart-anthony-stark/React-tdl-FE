@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 export default function useResetPass() {
   const [isLoading, setLoading] = useState();
 
-  const sendResetCode = async (email) => {
+  const sendResetCode = async (email, callback) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const isValidEmail = emailRegex.test(email);
 
@@ -22,6 +22,7 @@ export default function useResetPass() {
           toast.error(json.msg);
         } else {
           toast.success("Email was successfully sent to your account!");
+          callback()
         }
       } catch (error) {
         setLoading(false);
