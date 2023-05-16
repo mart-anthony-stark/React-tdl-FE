@@ -6,7 +6,7 @@ import FetchLoading from "../../components/FetchLoading/FetchLoading";
 import PinInput from "../../components/PinInput";
 
 export default function ResetCode() {
-  const { isLoading, sendResetCode } = useResetPass();
+  const { isLoading, sendResetCode, sendVerifyCode } = useResetPass();
   const { email } = useParams();
   const [isResendActive, setIsResendActive] = useState(false);
   const [timer, setTimer] = useState(30);
@@ -47,7 +47,7 @@ export default function ResetCode() {
 
       <form onSubmit={(e) => e.preventDefault()}>
         <div className="grp center col">
-          <PinInput />
+          <PinInput email={email} />
         </div>
       </form>
 
