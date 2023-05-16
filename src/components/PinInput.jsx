@@ -1,8 +1,11 @@
 import React, { useState, useRef } from "react";
+import useResetPass from "../hooks/useResetPass";
+import FetchLoading from "./FetchLoading/FetchLoading";
 
-const PinInput = () => {
+const PinInput = ({ email }) => {
   const [pin, setPin] = useState(["", "", "", "", "", ""]);
   const inputRefs = useRef([]);
+  const { isLoading, sendVerifyCode } = useResetPass();
 
   const handleChange = (e, index) => {
     const { value } = e.target;
@@ -21,7 +24,7 @@ const PinInput = () => {
         const code = pin.join("") + value;
 
         //   Handle Form Submission
-        console.log(code);
+        sendVerifyCode({ email, code });
       }
     } else {
       if (index > 0) {
@@ -53,7 +56,8 @@ const PinInput = () => {
       setPin(newPin);
 
       //   Handle Form Submission
-      console.log(newPin.join(""));
+      const code = newPin.join("");
+      sendVerifyCode({ email, code });
     }
   };
 
@@ -63,6 +67,8 @@ const PinInput = () => {
 
   return (
     <div style={{ margin: "auto" }}>
+      {isLoading ? <FetchLoading /> : null}
+
       {pin.map((digit, index) => (
         <input
           key={index}
