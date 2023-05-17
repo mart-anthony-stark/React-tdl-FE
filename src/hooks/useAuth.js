@@ -50,7 +50,29 @@ export default function useAuth() {
    */
   const signup = async ({ name, email, password, dob }) => {
     try {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const isValidEmail = emailRegex.test(email);
+
+      // VALIDATION
+      let valid = true;
+      if (name === undefined || name.length === 0) {
+        valid = false;
+        toast.error("Name field is required. Please enter your name");
+      }
+      if (name === undefined || !isValidEmail) {
+        valid = false;
+        toast.error("Invalid Email.");
+      }
+      if (password === undefined || password.length < 8) {
+        valid = false;
+        toast.error("Password must be at least 8 characters long.");
+      }
+
+      if (!valid) {
+        return;
+      }
       setLoading(true);
+
       const res = await fetch(
         `${process.env.REACT_APP_API_URL}/auth/register`,
         {
