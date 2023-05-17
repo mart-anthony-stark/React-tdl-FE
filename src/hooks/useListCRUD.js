@@ -194,6 +194,7 @@ export const useListCRUD = () => {
    */
   const addTask = async ({ taskname, description, due, time }, callback) => {
     try {
+      setIsFetching(true);
       let isValid = true;
       // validation
       if (taskname === null || taskname.length === 0) {
@@ -234,6 +235,8 @@ export const useListCRUD = () => {
           body: JSON.stringify(newTask),
         });
         const data = await res.json();
+
+        setIsFetching(false);
         if (!res.ok) {
           toast.success("Something went wrong to the server.");
           return;
@@ -245,6 +248,7 @@ export const useListCRUD = () => {
         toast.success("Successfully added new to do.");
       }
     } catch (error) {
+      setIsFetching(false);
       console.log(error);
     }
   };
