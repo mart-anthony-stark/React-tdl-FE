@@ -5,10 +5,10 @@ import FetchLoading from "../../components/FetchLoading/FetchLoading";
 
 export default function Register() {
   const { signup, isLoading } = useAuth();
-  const [name, setName] = useState();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [dob, setDOB] = useState();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [dob, setDOB] = useState("");
 
   const handleSignup = (e) => {
     e.preventDefault();
