@@ -194,7 +194,6 @@ export const useListCRUD = () => {
    */
   const addTask = async ({ taskname, description, due, time }, callback) => {
     try {
-      setIsFetching(true);
       let isValid = true;
       // validation
       if (taskname === null || taskname.length === 0) {
@@ -225,7 +224,9 @@ export const useListCRUD = () => {
           completed: false,
         };
         newTask._id = undefined;
+
         // DB WORK
+        setIsFetching(true);
         const res = await fetch(`${process.env.REACT_APP_API_URL}/todo`, {
           method: "POST",
           headers: {
@@ -290,6 +291,7 @@ export const useListCRUD = () => {
         dispatch({ type: "SET_LIST", payload: newList });
 
         // DB WORK
+        setIsFetching(true);
         const res = await fetch(
           `${process.env.REACT_APP_API_URL}/todo/${_id}`,
           {
@@ -303,12 +305,14 @@ export const useListCRUD = () => {
         );
 
         const data = await res.json();
+        setIsFetching(false);
         if (res.ok) {
           toast.success("Successfully saved task");
         }
         callback();
       }
     } catch (error) {
+      setIsFetching(false);
       console.log(error);
     }
   };
