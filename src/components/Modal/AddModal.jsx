@@ -1,16 +1,18 @@
 import { useState } from "react";
 import { useListCRUD } from "../../hooks/useListCRUD";
 import "./modal.css";
+import FetchLoading from "../FetchLoading/FetchLoading";
 
 export default function AddModal({ onClose }) {
   const [taskname, setTaskname] = useState("");
   const [description, setDescription] = useState("");
   const [due, setDue] = useState("");
   const [time, setTime] = useState("");
-  const { addTask } = useListCRUD();
+  const { addTask, isFetching } = useListCRUD();
 
   return (
     <div className="add_modal">
+      {isFetching ? <FetchLoading /> : null}
       <h2>Add a task</h2>
 
       <table>
