@@ -2,11 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useAuthContext } from "./useAuthContext";
+import { useListContext } from "./useListContext";
 
 export default function useAuth() {
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { user, dispatch } = useAuthContext();
+  const { dispatch: listDispatch } = useListContext();
 
   /**
    * Login
@@ -18,7 +20,7 @@ export default function useAuth() {
       const res = await fetch(`${process.env.REACT_APP_API_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password })
       });
       const json = await res.json();
       setLoading(false);
@@ -78,7 +80,7 @@ export default function useAuth() {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, email, password, dob }),
+          body: JSON.stringify({ name, email, password, dob })
         }
       );
       const json = await res.json();
@@ -113,12 +115,12 @@ export default function useAuth() {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            authorization: `Bearer ${user.token}`,
+            authorization: `Bearer ${user.token}`
           },
           body: JSON.stringify({
             currentPassword: currentPass,
-            newPassword: newPass,
-          }),
+            newPassword: newPass
+          })
         }
       );
       const json = await res.json();
@@ -140,6 +142,8 @@ export default function useAuth() {
   const logout = async () => {
     localStorage.clear();
     dispatch({ type: "LOGOUT" });
+    listDispatch({ type: "SET_LIST", payload: [] });
+    listDispatch({ type: "SET_HISTORY", payload: [] });
     navigate("/auth/login");
   };
   return {
@@ -147,6 +151,6 @@ export default function useAuth() {
     login,
     signup,
     logout,
-    changePassword,
+    changePassword
   };
 }
