@@ -25,7 +25,7 @@ export default function History() {
       showDenyButton: true,
       confirmButtonText: "Yes",
       denyButtonText: "No",
-      confirmButtonColor: "green",
+      confirmButtonColor: "green"
     }).then((result) => {
       if (result.isConfirmed) {
         deleteHistoryItem(_id);
@@ -40,7 +40,7 @@ export default function History() {
       <h4 className="heading center" style={{ justifyContent: "flex-start" }}>
         History
       </h4>
-      <table>
+      <table className="main-table">
         <thead>
           <tr>
             <th>Task</th>
@@ -71,6 +71,37 @@ export default function History() {
           ))}
         </tbody>
       </table>
+
+      {/* FOR MOBILE VIEW */}
+      <div className="cards">
+        {filteredItems.map((item) => (
+          <div className="card center" key={item._id}>
+            <div className="content">
+              <h4>
+                Task: <span>{item.taskname}</span>
+              </h4>
+              <h4>
+                Description: <span>{item.description}</span>
+              </h4>
+              <h4>
+                Due: <span>{new Date(item.due).toLocaleDateString()}</span>
+              </h4>
+              <h4>
+                Time: <span>{timeConvert(item.time)}</span>
+              </h4>
+            </div>
+            <div className="controls">
+              Status: Completed
+              <button
+                onClick={() => handleDelete(item._id)}
+                className="btn-danger"
+              >
+                <AiFillDelete />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
 
       {/* LOADER */}
       {isFetching ? <TodoLoader /> : null}
