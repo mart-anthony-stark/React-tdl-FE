@@ -10,6 +10,7 @@
   color: #ffffff;
   font-size: 1.5rem;
   font-weight: bold;
+  margin: 0 1rem;
 }
 .navbar .active {
   color: var(--c-accent) !important;
@@ -53,4 +54,9 @@
 .navbar .menu .menu_item label {
   user-select: none;
   cursor: pointer;
+}
+@media screen and (max-width: 650px) {
+  .navbar a {
+    font-size: 1rem;
+  }
 }
