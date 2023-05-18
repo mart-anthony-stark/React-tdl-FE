@@ -20,17 +20,20 @@
   border-top: 2px solid black;
   border-bottom: 2px solid black;
 }
-.main_page table .favorite {
+.main_page table .favorite,
+.main_page .cards .card .controls .favorite {
   font-size: 2rem;
   text-align: center;
   cursor: pointer;
+  color: black;
 }
 .main_page input[type="checkbox"] {
   cursor: pointer;
   width: 25px;
   height: 25px;
 }
-.main_page table .action-btns button {
+.main_page table .action-btns button,
+.main_page .cards .card .controls button {
   margin: 0 5px;
   border-radius: 50%;
   border: none;
@@ -38,4 +41,40 @@
   width: 30px;
   font-size: 1.2rem;
   color: #ffffff;
+}
+
+.main_page .cards {
+  display: none;
+  padding: 0.5rem;
+  flex-direction: column;
+  gap: 1rem;
+}
+.main_page .cards .card {
+  background: #eeeded;
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 0.5rem;
+  min-height: 100px;
+  justify-content: space-between;
+}
+.main_page .cards .card .content {
+  max-width: 430px;
+}
+.main_page .cards .card .controls .favorite {
+  transform: translateY(10px);
+}
+.main_page .cards .card h4 {
+  word-wrap: break-word;
+}
+.main_page .cards .card h4 span {
+  font-weight: normal;
+}
+
+@media screen and (max-width: 670px) {
+  .main_page .main-table {
+    display: none;
+  }
+  .main_page .cards {
+    display: flex;
+  }
 }
