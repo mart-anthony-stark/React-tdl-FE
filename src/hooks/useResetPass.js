@@ -23,7 +23,7 @@ export default function useResetPass() {
         const json = await res.json();
         setLoading(false);
         if (!res.ok) {
-          toast.error(json.msg);
+          if (json.msg?.message) toast.error(json.msg?.message);
         } else {
           toast.success("Email was successfully sent to your account!");
           callback();
@@ -49,12 +49,11 @@ export default function useResetPass() {
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, code }),
+            body: JSON.stringify({ email, code })
           }
         );
         const json = await res.json();
         setLoading(false);
-        console.log(json);
         if (!res.ok) {
           toast.error(json.msg);
         } else {
@@ -85,11 +84,11 @@ export default function useResetPass() {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            authorization: `Bearer ${user.token}`,
+            authorization: `Bearer ${user.token}`
           },
           body: JSON.stringify({
-            newPassword,
-          }),
+            newPassword
+          })
         }
       );
       const json = await res.json();
@@ -110,6 +109,6 @@ export default function useResetPass() {
     isLoading,
     sendResetCode,
     sendVerifyCode,
-    resetPassword,
+    resetPassword
   };
 }
