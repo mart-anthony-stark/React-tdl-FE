@@ -11,6 +11,7 @@
 }
 .login_page .right {
   flex-direction: column;
+  padding: 1rem;
 }
 .login_page .right form {
   align-items: flex-start;
@@ -43,4 +44,13 @@
 }
 .forgot_password button {
   margin-top: 10px;
+}
+
+@media screen and (max-width: 650px) {
+  .login_page .left.center {
+    display: none;
+  }
+  .login_page {
+    grid-template-columns: unset;
+  }
 }
