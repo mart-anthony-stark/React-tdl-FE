@@ -16,8 +16,13 @@ import Swal from "sweetalert2";
 
 export default function TodayList() {
   const { list } = useListContext();
-  const { toggleImportant, toggleCompleted, getTasks, deleteTask, isFetching } =
-    useListCRUD();
+  const {
+    toggleImportant,
+    toggleCompleted,
+    getTasks,
+    deleteTask,
+    isFetching
+  } = useListCRUD();
   const [todayDate, setTodayDate] = useState("");
   const [selectedTask, setSelectedTask] = useState(null);
   const [addModalVisibility, setAddModalVisibility] = useState(false);
@@ -27,7 +32,7 @@ export default function TodayList() {
     today: "Today List",
     planned: "Plans",
     priority: "Priority List",
-    history: "History List",
+    history: "History List"
   };
 
   const handleDelete = (_id) => {
@@ -36,7 +41,7 @@ export default function TodayList() {
       showDenyButton: true,
       confirmButtonText: "Yes",
       denyButtonText: "No",
-      confirmButtonColor: "green",
+      confirmButtonColor: "green"
     }).then((result) => {
       if (result.isConfirmed) {
         deleteTask(_id);
@@ -100,7 +105,7 @@ export default function TodayList() {
       </h4>
 
       {/* Main Content (Todos Table) */}
-      <table>
+      <table className="main-table">
         <thead>
           <tr>
             <th>Task</th>
@@ -117,7 +122,12 @@ export default function TodayList() {
               <td>
                 <div
                   className="center"
-                  style={{ justifyContent: "flex-start" }}
+                  style={{
+                    justifyContent: "flex-start",
+                    whiteSpace: "nowrap",
+                    overflowX: "auto",
+                    maxWidth: 300
+                  }}
                 >
                   <input
                     onClick={() => toggleCompleted(item._id)}
@@ -129,7 +139,15 @@ export default function TodayList() {
                   {item.taskname}
                 </div>
               </td>
-              <td>{item.description}</td>
+              <td
+                style={{
+                  whiteSpace: "nowrap",
+                  overflowX: "auto",
+                  maxWidth: 200
+                }}
+              >
+                {item.description}
+              </td>
               <td>{new Date(item.due).toLocaleDateString()}</td>
               <td>{timeConvert(item.time)}</td>
               {/* Add to favorites */}
@@ -162,6 +180,57 @@ export default function TodayList() {
         </tbody>
       </table>
 
+      {/* FOR MOBILE VIEW */}
+      <div className="cards">
+        {filteredItems.map((item) => (
+          <div className="card center" key={item._id}>
+            <div className="content">
+              <h4>
+                Task: <span>{item.taskname}</span>
+              </h4>
+              <h4>
+                Description: <span>{item.description}</span>
+              </h4>
+              <h4>
+                Due: <span>{new Date(item.due).toLocaleDateString()}</span>
+              </h4>
+              <h4>
+                Time: <span>{timeConvert(item.time)}</span>
+              </h4>
+              <button
+                className="btn-positive"
+                onClick={() => toggleCompleted(item._id)}
+              >
+                Mark as Completed
+              </button>
+            </div>
+            <div className="controls">
+              <button
+                onClick={() => toggleImportant(item._id)}
+                className="favorite"
+              >
+                {item.important ? <AiFillStar /> : <AiOutlineStar />}
+              </button>
+              {params.category === "planned" ? (
+                <>
+                  <button
+                    onClick={() => setSelectedTask(item)}
+                    className="btn-success"
+                  >
+                    <MdModeEditOutline />
+                  </button>
+                  <button
+                    onClick={() => handleDelete(item._id)}
+                    className="btn-danger"
+                  >
+                    <AiFillDelete />
+                  </button>
+                </>
+              ) : null}
+            </div>
+          </div>
+        ))}
+      </div>
       {/* LOADER */}
       {isFetching ? <TodoLoader /> : null}
     </div>
